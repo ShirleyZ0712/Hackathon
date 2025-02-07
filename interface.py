@@ -264,10 +264,10 @@ for ticker in tickers:
             🔹Smaller squares represent stocks with **fewer news mentions**.  
 
             2️⃣ **🎨 Color Represents Sentiment Type and Intensity**  
-            🔹 **🟥 Deep Red**: Strong **negative sentiment** (e.g., PLUG, TSLA).  
+            🔹 **🟥 Deep Red**: Strong **negative sentiment** (e.g., PLUG, NVDA).  
             🔹 **🟧 Light Red/Pink**: Mildly **negative sentiment**.  
             🔹 **🟦 Light Blue**: Mildly **positive sentiment**.  
-            🔹 **🔵 Deep Blue**: Strong **positive sentiment** (e.g., RIVN, SMCI).  
+            🔹 **🔵 Deep Blue**: Strong **positive sentiment** (e.g., RIVN, TSLA).  
 
             3️⃣ **🏢 Each Square Represents a Company**  
             🔹 The **ticker symbol** (e.g., **NVDA, AAPL, TSLA**) is displayed within its respective square.  
@@ -361,11 +361,14 @@ elif model_choice == "SARIMAX":
     """, unsafe_allow_html=True)
     
     predicted_volume_sarimax = 32194940
+    ci_lower_sarimax = 15258230
+    ci_upper_sarimax = 49131660
 
     st.markdown(f"""
     <div style="text-align: center;">
         <h3>📊 Predicted Trading Volume on Dec 31, 2024</h3>
         <p style="font-size:18px;">Using <b>SARIMAX</b>, the estimated trading volume between 9:30am - 10:30am EST is <b>{predicted_volume_sarimax:,.0f}</b> shares.</p>
+        <p style="font-size:16px; color:gray;">90% Confidence Interval: <b>{ci_lower_sarimax:,.0f}</b> to <b>{ci_upper_sarimax:,.0f}</b> shares</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -509,14 +512,22 @@ else:
     dec_31_data = test_data[test_data['Date'] == '2024-12-30']
 
     if not dec_31_data.empty:
-        predicted_volume = model.predict(dec_31_data[features])[0] *10000000 # Predict the first data point
+        predicted_volume = model.predict(dec_31_data[features])[0] * 10000000  # Predict the first data point
 
-        # Display prediction dynamically for each model
+        # Calculate Confidence Interval
+        residuals = actuals - predictions
+        std_dev = np.std(residuals)
+
+        ci_upper = predicted_volume + 1.645 * std_dev * 10000000
+        ci_lower = predicted_volume - 1.645 * std_dev * 10000000
+
+        # Display prediction dynamically for each model with CI
         if model_choice == 'Random Forest':
             st.markdown(f"""
             <div style="text-align: center;">
                 <h3>🌲 Predicted Trading Volume on Dec 31, 2024</h3>
                 <p style="font-size:18px;">Using <b>Random Forest</b>, the estimated trading volume between 9:30am - 10:30am EST is <b>{predicted_volume:,.0f}</b> shares.</p>
+                <p style="font-size:16px; color:gray;">90% Confidence Interval: <b>{ci_lower:,.0f}</b> to <b>{ci_upper:,.0f}</b> shares</p>
             </div>
             """, unsafe_allow_html=True)
 
@@ -525,6 +536,7 @@ else:
             <div style="text-align: center;">
                 <h3>📈 Predicted Trading Volume on Dec 31, 2024</h3>
                 <p style="font-size:18px;">Using <b>Linear Regression</b>, the estimated trading volume between 9:30am - 10:30am EST is <b>{predicted_volume:,.0f}</b> shares.</p>
+                <p style="font-size:16px; color:gray;">90% Confidence Interval: <b>{ci_lower:,.0f}</b> to <b>{ci_upper:,.0f}</b> shares</p>
             </div>
             """, unsafe_allow_html=True)
 
@@ -533,6 +545,7 @@ else:
             <div style="text-align: center;">
                 <h3>🚀 Predicted Trading Volume on Dec 31, 2024</h3>
                 <p style="font-size:18px;">Using <b>XGBoost</b>, the estimated trading volume between 9:30am - 10:30am EST is <b>{predicted_volume:,.0f}</b> shares.</p>
+                <p style="font-size:16px; color:gray;">90% Confidence Interval: <b>{ci_lower:,.0f}</b> to <b>{ci_upper:,.0f}</b> shares</p>
             </div>
             """, unsafe_allow_html=True)
 
