@@ -256,36 +256,29 @@ for ticker in tickers:
         st.markdown(
             """
             This interactive heatmap provides a **real-time sentiment analysis** of key stocks before market open.  
-            Users can **select specific tickers of interest** and apply **various predictive models** to gain insights into potential market movements. 
+            Users can **select specific tickers of interest** and apply **various predictive models** to gain insights into potential market movements.  
 
-            1️⃣ **📏 Square Size Represents Sentiment Strength**  
-            
-            🔹 Larger squares indicate a **higher absolute sentiment score**, meaning stronger positive or negative sentiment.  
-            
-            🔹 Smaller squares represent **weaker sentiment scores** (closer to neutral).  
+            ---  
+            1️⃣ **📏 Square Size Represents News Coverage Intensity**  
+            🔹 Larger squares indicate stocks with **more news coverage**.  
+            🔹Smaller squares represent stocks with **fewer news mentions**.  
 
             2️⃣ **🎨 Color Represents Sentiment Type and Intensity**  
-            
-            🔹 **🟥 Deep Red**: Strong **positive sentiment** (e.g., PLUG, TSLA).  
-            
-            🔹 **🟧 Light Red/Pink**: Mildly positive sentiment.  
-            
-            🔹 **🟦 Light Blue**: Mildly negative sentiment.  
-            
-            🔹 **🔵 Deep Blue**: Strong **negative sentiment** (e.g., RIVN, SMCI).  
+            🔹 **🟥 Deep Red**: Strong **negative sentiment** (e.g., PLUG, TSLA).  
+            🔹 **🟧 Light Red/Pink**: Mildly **negative sentiment**.  
+            🔹 **🟦 Light Blue**: Mildly **positive sentiment**.  
+            🔹 **🔵 Deep Blue**: Strong **positive sentiment** (e.g., RIVN, SMCI).  
 
             3️⃣ **🏢 Each Square Represents a Company**  
-            
-            🔹 The **ticker symbol** of the company (e.g., **NVDA, AAPL, TSLA**) is displayed within the corresponding square.  
-            
+            🔹 The **ticker symbol** (e.g., **NVDA, AAPL, TSLA**) is displayed within its respective square.  
             🔹 Below the ticker, the **sentiment score** is shown, ranging from **-1 to 1**, where:  
-                    **1.00** → Extremely **positive** news sentiment.  
-                    **-1.00** → Extremely **negative** news sentiment.  
-                    **0.00** → Completely **neutral** sentiment.  
+                 **1.00** → Extremely **positive** sentiment.  
+                 **-1.00** → Extremely **negative** sentiment.  
+                 **0.00** → **Neutral** sentiment.  
 
             """
         )
-        
+
         st.markdown(
             """
             <style>
